@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        username:<input class="user" type="text"><p></p>
+        password:<input class="user" type="password"><p></p>
+        <input id="submit" type="button" value="提交" onclick="submit()">
+
+    </div>
+    <script>
+        function submit() {
+            //var username = document.getElementById("username")
+            let user = document.querySelectorAll(".user");
+            let username = user[0].value;
+            let password = user[1].value;
+            if (jQuery.trim(username) == "" || jQuery.trim(password)=="") {
+                alert("请输入账号或密码");
+            }
+
+            let body = {
+                username:username,
+                password:password
+            }
+            jQuery.ajax({
+                method:"post",
+                url:"login",
+                contentType:"application/json",
+                data:JSON.stringify(body),
+                complete:function(xhr,status) {
+                    console.log(xhr.status);
+                    if (xhr.status == 302) {
+                        alert("登录成功");
+                        window.location.href = "/index";
+                    } else {
+                        alert("账号或密码错误");
+                        window.location("login.html");
+                    }
+                }
+            })
+        }
+    </script>
+
+</body>
+</html>
