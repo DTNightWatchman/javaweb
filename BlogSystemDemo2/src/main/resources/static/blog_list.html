@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表页面</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_list.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+    <class class="nav">
+        <img src="image/123.jpg" alt="" width="40px">
+        <span class="title">我的博客系统</span>
+        <span class="spacer"></span>
+        <a href="#">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <a href="login/logout">注销</a>
+    </class>
+    <class class="container">
+        <class class="container-left">
+            <div class="card">
+                <img src="image/345.jpg" alt="">
+                <h3></h3>
+                <a href="#">github地址</a>
+                <div class="conter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="conter">
+                    <span class="number"></span>
+                    <span>1</span>
+                </div>
+            </div>
+        </class>
+        <div class="container-right">
+            <!-- <div class="message">
+                <div class="title">我的第一篇博客</div>
+                <div class="data">2021-10-24</div>
+                <div class="desc">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Dolores quo voluptatibus veniam, asperiores, 
+                    officiis doloribus maiores omnis quod beatae aspernatur, 
+                    eveniet ipsam amet optio! Libero 
+                    doloremque blanditiis quae qui laboriosam.
+                </div>
+                <a href="#">查看全文 &gt; &gt;</a>
+            </div> -->
+        </div>
+    </class>
+
+    <script>
+        jQuery.ajax({
+            url: 'user/usermessage',
+            method: 'get',
+            success: function (data, status) {
+                if (status == 302) {
+                    location.href = "blog_login.html";
+                    return;
+                }
+                let number = document.querySelector('.container-left .card .conter .number');
+                number.innerHTML = data.number;
+                let h3 = document.querySelector('.container-left .card h3');
+                h3.innerHTML = data.username;
+            }
+        });
+
+        jQuery.ajax({
+            url: 'blog/bloglist',
+            method: 'get',
+            success: function(data, status) {
+                if (status == 302) {
+                    location.href = "blog_login.html";
+                    return;
+                }
+                // 此处的 data 就是服务器返回的 响应 的 body.
+                // 由于响应是一个 json 格式的 (响应的 Content-Type 是 application/json)
+                // 因此 jquery 就会自动的把响应数据给转换成 对象数组
+                buildBlogs(data);
+            }
+        });
+
+
+        function buildBlogs(data) {
+            let container = document.querySelector('.container-right');
+            for (let blog of data) {
+                let blogDiv = document.createElement('div');
+                blogDiv.className = 'message';
+                // 构建标题
+                let titleDiv = document.createElement('div');
+                titleDiv.className = 'title';
+                titleDiv.innerHTML = blog.title;
+                blogDiv.appendChild(titleDiv);
+                // 构建发布日期
+                let dateDiv = document.createElement("div");
+                dateDiv.className = 'data';
+                dateDiv.innerHTML = formatDate(blog.postTime);
+                blogDiv.appendChild(dateDiv);
+                // 构造博客的摘要
+                let descDiv = document.createElement('div');
+                descDiv.className = 'desc';
+                descDiv.innerHTML = blog.content;
+                blogDiv.appendChild(descDiv);
+                // 构造 a 标签
+                let detailA = document.createElement('a');
+                detailA.className = 'detail';
+                detailA.innerHTML = '查看全文 &gt; &gt;';
+                // 此处必须要明确的描述出要访问的博客正文是哪篇博客的.
+                detailA.href = 'blog_detail.html?blogId=' + blog.blogId;
+                blogDiv.appendChild(detailA);
+                // 把构造好的 blogDiv 给插入到 父元素 中.
+                container.appendChild(blogDiv);
+            }
+        }
+
+        function formatDate(time) {
+            // 通过这个函数, 把时间戳转成格式化的日期, 形如 2022-03-09 12:00:00
+            var date = new Date(time);
+            var year = date.getFullYear(),
+                month = date.getMonth()+1,//月份是从0开始的
+                day = date.getDate(),
+                hour = date.getHours(),
+                min = date.getMinutes(),
+                sec = date.getSeconds();
+            var newTime = year + '-' +
+                (month < 10? '0' + month : month) + '-' +
+                (day < 10? '0' + day : day) + ' ' +
+                (hour < 10? '0' + hour : hour) + ':' +
+                (min < 10? '0' + min : min) + ':' +
+                (sec < 10? '0' + sec : sec);
+            return newTime;
+        }
+    </script>
+</body>
+</html> 

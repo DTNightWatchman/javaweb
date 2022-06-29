@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_detial.css">
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="editor.md/lib/marked.min.js"></script>
+    <script src="editor.md/lib/prettify.min.js"></script>
+    <script src="editor.md/editormd.js"></script>
+</head>
+<body>
+    <class class="nav">
+        <img src="image/123.jpg" alt="" width="40px">
+        <span class="title">我的博客系统</span>
+        <span class="spacer"></span>
+        <a href="blog_list.html">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <a href="login/logout" class="logout">注销</a>
+    </class>
+    <class class="container">
+        <class class="container-left">
+            <div class="card">
+                <img src="image/345.jpg" alt="">
+                <h3 onclick="reUserBlogs()" style="cursor: pointer"></h3>
+                <a href="#">github地址</a>
+                <div class="conter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="conter">
+                    <!-- .container .container-left .card .conter .number -->
+                    <span class="number"></span>
+                    <span>1</span>
+                </div>
+            </div>
+        </class>
+        <div class="container-right">
+            <div class="text">
+                <h3></h3>
+                <div class="data"></div>
+                <div class="desc" id="content" style="background-color: transparent;">
+
+                </div>
+                <div>
+                    <input type="submit" id="submit" value="查看评论" onclick="toDiscuss()">
+                </div>
+            </div>
+        </div>
+
+    </class>
+
+    <script>
+        $.ajax({
+            url: "blog/getblog" + location.search,
+            method: "get",
+            success: function(data, status) {
+                buildBlog(data);
+                console.log(status);
+            }
+        });
+
+        function reUserBlogs() {
+            location.href = "userbloglist.html" + location.search;
+        }
+
+        function buildBlog(data) {
+            // 1. 把 title 填到 h3 标签中.
+            let titleH3 = document.querySelector('.container-right h3');
+            titleH3.innerHTML = data.title;
+            // 2. 设置发布时间
+            let dateDiv = document.querySelector('.container-right .data');
+            dateDiv.innerHTML = formatDate(data.postTime);
+            // 3. 设置正文. 正文要放到 #content 这个元素中.
+            //    但是此处不要直接放. 要通过 markdown 进行渲染.
+            editormd.markdownToHTML('content', {markdown: data.content});
+        }
+
+        function formatDate(time) {
+            // 通过这个函数, 把时间戳转成格式化的日期, 形如 2022-03-09 12:00:00
+            var date = new Date(time);
+            var year = date.getFullYear(),
+                month = date.getMonth()+1,//月份是从0开始的
+                day = date.getDate(),
+                hour = date.getHours(),
+                min = date.getMinutes(),
+                sec = date.getSeconds();
+            var newTime = year + '-' +
+                (month < 10? '0' + month : month) + '-' +
+                (day < 10? '0' + day : day) + ' ' +
+                (hour < 10? '0' + hour : hour) + ':' +
+                (min < 10? '0' + min : min) + ':' +
+                (sec < 10? '0' + sec : sec);
+            return newTime;
+        }
+
+        $.ajax({
+            // 此时的 url 形如 user?blogId=1
+            url: 'user/getuser' + location.search,
+            method: 'get',
+            success: function(data, status) {
+                changeUser(data);
+            }
+        });
+
+        function changeUser(user) {
+            let number = document.querySelector('.container-left .card .conter .number');
+            number.innerHTML = user.number;
+            let h3 = document.querySelector('.container-left .card h3');
+            h3.innerHTML = user.username;
+            // 在这里进行扩充. 根据 user 中的 isYourBlog 的值来决定是否要再加上一个删除按钮.
+            if (user.isYourBlog == 1) {
+                // 就需要显示删除按钮.
+                let deleteButton = document.createElement('a');
+                deleteButton.innerHTML = '删除';
+                deleteButton.onclick = function () {
+                    jQuery.ajax({
+                        url: 'blog/blogDelete' + location.search,
+                        method: "get",
+                        success: function (data,status) {
+                            if (data.success == 1) {
+                                alert(data.message);
+                                location.href = "blog_list.html";
+
+                            } else {
+                                alert(data.message);
+                            }
+
+                        }
+                    });
+                    location.href = "blog_list.html";
+                }
+                // 删除的请求中要带上 ?blogId=1   其中 location.search 就是 ?blogId=1
+                //'blog/blogDelete' + location.search
+                deleteButton.href = "#";
+
+                let navDiv = document.querySelector('.nav');
+                navDiv.appendChild(deleteButton);
+            }
+        }
+
+        function toDiscuss() {
+            location.href = "discuss.html" + location.search;
+        }
+
+    </script>
+
+</body>
+</html>

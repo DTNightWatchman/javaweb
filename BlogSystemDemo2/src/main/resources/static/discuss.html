@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表页面</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_discuss.css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+    <class class="nav">
+        <img src="image/123.jpg" alt="" width="40px">
+        <span class="title">我的博客系统</span>
+        <span class="spacer"></span>
+        <a href="blog_list.html">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <a href="login/logout">注销</a>
+    </class>
+    <class class="container">
+
+        <div class="container-right" style="margin-left: 100px;">
+            <input type="submit" id="submit1" value="<< 返回博客详情页" onclick="retRe()">
+
+            <textarea name="text" id="discuss" cols="80" rows="10" placeholder="请输入评论"></textarea>
+            <input type="submit" id="submit" value="发布评论" onclick="sendText()">
+            <div class="message">
+
+            </div>
+
+        </div>
+    </class>
+
+    <script>
+        function retRe() {
+            location.href = "blog_detail.html" + location.search;
+        }
+
+        function sendText() {
+            var text = document.querySelector(".container-right #discuss").value;
+            document.querySelector(".container-right #discuss").value = "";
+            if (text == "") {
+                alert("评论内容不能为空");
+                return;
+            }
+            //?blogId=24
+            let params = new URL(location.href).searchParams;
+            let blogId = params.get('blogId');
+            var data = JSON.stringify({
+               "blogId": blogId,
+                "content": text
+            });
+            jQuery.ajax({
+                url: 'discuss/adddiscuss',
+                method: 'post',
+                data: data,
+                contentType: 'application/json',
+                success: function (result, status) {
+                    alert(result.message);
+                    location.reload();
+                }
+            });
+        }
+
+        jQuery.ajax({
+            url: 'discuss/discusslist' + location.search,
+            method: 'get',
+            success: function(data, status) {
+                if (status == 302) {
+                    location.href = "blog_login.html";
+                    return;
+                }
+
+                buildBlogs(data);
+            }
+        });
+
+
+        function buildBlogs(data) {
+            let container = document.querySelector('.container-right');
+            for (let message of data) {
+                let messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                // 构建标题
+                let usernameDiv = document.createElement('div');
+                usernameDiv.className = 'username';
+                usernameDiv.innerHTML = message.username;
+                messageDiv.appendChild(usernameDiv);
+                // 构建发布日期
+                let dateDiv = document.createElement("div");
+                dateDiv.className = 'datatime';
+                dateDiv.innerHTML = formatDate(message.postTime);
+                messageDiv.appendChild(dateDiv);
+                // 构造评论的信息。
+                let descDiv = document.createElement('div');
+                descDiv.className = 'desc';
+                descDiv.innerHTML = message.content;
+                messageDiv.appendChild(descDiv);
+
+                // 判断是不是自己的评论，如果是就添加删除按键
+                if (message.isYourDiscuss == 1) {
+                    let deleteButton = document.createElement('input');
+                    deleteButton.type = "button";
+                    deleteButton.className = 'delete';
+                    deleteButton.value = '删除';
+                    deleteButton.onclick = function () {
+                        jQuery.ajax({
+                            url: '/discuss/deletediscuss?discussId=' + message.discussId,
+                            method: 'get',
+                            success: function (data,status) {
+                                if (data.success == 1) {
+                                    alert("删除成功");
+                                } else {
+                                    alert("删除失败");
+                                }
+                                location.href = 'discuss.html?blogId=' + message.blogId;
+
+                            }
+                        })
+                    }
+                    messageDiv.append(deleteButton);
+                }
+                
+                let hr = document.createElement("hr");
+                messageDiv.appendChild(hr);
+                // 把构造好的 blogDiv 给插入到 父元素 中.
+                container.appendChild(messageDiv);
+
+            }
+        }
+
+
+        function formatDate(time) {
+            // 通过这个函数, 把时间戳转成格式化的日期, 形如 2022-03-09 12:00:00
+            var date = new Date(time);
+            var year = date.getFullYear(),
+                month = date.getMonth()+1,//月份是从0开始的
+                day = date.getDate(),
+                hour = date.getHours(),
+                min = date.getMinutes(),
+                sec = date.getSeconds();
+            var newTime = year + '-' +
+                (month < 10? '0' + month : month) + '-' +
+                (day < 10? '0' + day : day) + ' ' +
+                (hour < 10? '0' + hour : hour) + ':' +
+                (min < 10? '0' + min : min) + ':' +
+                (sec < 10? '0' + sec : sec);
+            return newTime;
+        }
+    </script>
+</body>
+</html> 

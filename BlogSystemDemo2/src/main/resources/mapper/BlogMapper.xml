@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blogsystemdemo2.mapper.BlogMapper">
+    <resultMap id="BaseMap" type="com.example.blogsystemdemo2.model.Blog">
+        <id property="blogId" column="blogId"></id>
+        <result property="title" column="title"></result>
+        <result property="content" column="content"></result>
+        <result property="postTime" column="postTime"></result>
+        <result property="userId" column="userId"></result>
+    </resultMap>
+
+    <select id="getBlogById" resultType="com.example.blogsystemdemo2.model.Blog">
+        select * from blog where blogId = #{blogId}
+    </select>
+
+    <insert id="insertBlog">
+        insert into blog values (null, #{title}, #{content}, now(), #{userId})
+    </insert>
+
+    <insert id="insertBlog2" useGeneratedKeys="true" keyProperty="blogId">
+        insert into blog values (null, #{title}, #{content}, now(), #{userId})
+    </insert>
+
+    <select id="getAllBlog" resultType="com.example.blogsystemdemo2.model.Blog">
+        select blogId,title,left(content,100) content,posttime,userId from blog order by posttime desc;
+    </select>
+
+    <delete id="deleteBlogById">
+        delete from blog where blogId = #{blogId}
+    </delete>
+</mapper>

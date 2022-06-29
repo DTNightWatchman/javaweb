@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blogsystemdemo2.mapper.UserMapper">
+    <resultMap id="BaseMap" type="com.example.blogsystemdemo2.model.User">
+        <id property="userId" column="userId"></id>
+        <result property="username" column="username"></result>
+        <result property="password" column="password"></result>
+        <result property="number" column="number"></result>
+        <collection property="blogList" resultMap="com.example.blogsystemdemo2.mapper.BlogMapper.BaseMap" columnPrefix="b_"></collection>
+
+    </resultMap>
+
+    <insert id="addNewUser">
+        insert into user (username, password, number) values (#{username}, #{password},0);
+    </insert>
+    
+    <select id="findUserByName" resultType="com.example.blogsystemdemo2.model.User">
+        select * from user where username = #{username}
+    </select>
+
+    <select id="findUserByNameAndPassword" resultType="com.example.blogsystemdemo2.model.User">
+        select * from user where username = #{username} and password = #{password}
+    </select>
+
+    <select id="findUserById" resultType="com.example.blogsystemdemo2.model.User">
+        select * from user where userId = #{userId}
+    </select>
+
+    <update id="updateNumber">
+        update user set number = number + 1 where userId = #{userId}
+    </update>
+
+    <update id="decNumber">
+        update user set number  = number - 1 where userId = #{userId}
+    </update>
+
+    <select id="getOwnerBlogList" resultMap="BaseMap">
+        select u.*,b.blogId b_blogId,b.title b_title,left(b.content,100) b_content,
+        b.postTime b_postTime,b.userId b_userId
+        from user u left join blog b on u.userId = b.userId where u.userId = #{userId}
+    </select>
+
+</mapper>

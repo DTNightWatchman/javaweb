@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录页面</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_login.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <class class="nav">
+        <img src="image/123.jpg" alt="" width="40px">
+        <span class="title">我的博客系统</span>
+        <span class="spacer"></span>
+        <a href="#">主页</a>
+        <a href="#">写博客</a>
+        <a href="#">注销</a>
+    </class>
+    <div class="contain">
+        <class class="login">
+            <h3>注册</h3>
+            <div class="user">
+                <div class="t">用户名：</div>
+                <input type="text" class="text" id="text" name="username">
+            </div>
+            <div class="user">
+                <div class="t">密码：</div>
+                <input type="password" class="text" id="text" name="password">
+            </div>
+            <button class="submit" id="submit" onclick="mySubmit()">注册</button>
+
+        </class>
+    </div>
+
+    <script>
+        function mySubmit() {
+            var user = document.querySelectorAll(".text");
+            var username = user[0].value;
+            var password = user[1].value;
+            console.log(username);
+            console.log(password);
+            if(jQuery.trim(username) == "" || jQuery.trim(username) == "") {
+                alert("用户名或密码不能为空");
+                return;
+            }
+            jQuery.ajax({
+                url:"login/register",
+                method:"POST",
+                contentType:"application/json",
+                data: JSON.stringify({"username":username,"password":password}),
+                success:function(result) {
+                    console.log(result.success);
+                    console.log(result.data);
+                    if(result != null && result.success == 200 ) {
+                        if(result.data == 1) {
+                            alert("注册成功");
+                            location.href = "blog_login.html";
+                        } else {
+                            alert("注册失败，原因是" + result.message);
+                        }
+                    } else {
+                        alert("程序失效");
+                    }
+                },
+                error:function(result) {
+                    console.log(result.success);
+                    console.log(result.data);
+                    if(result != null && result.success == 200 ) {
+                        if(result.data == 1) {
+                            alert("注册成功");
+                            location.href = "blog_login.html";
+                        } else {
+                            alert("注册失败，原因是" + result.massage);
+                        }
+                    } else {
+                        alert("程序失效");
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>

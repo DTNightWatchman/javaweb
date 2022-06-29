@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录页面</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_login.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <class class="nav">
+        <img src="image/123.jpg" alt="" width="40px">
+        <span class="title">我的博客系统</span>
+        <span class="spacer"></span>
+        <a href="#">主页</a>
+        <a href="#">写博客</a>
+        <a href="#">注销</a>
+    </class>
+    <div class="contain">
+        <class class="login">
+            <h3>登录</h3>
+            <div class="user">
+                <div class="t">用户名：</div>
+                <input type="text" class="text" name="username">
+            </div>
+            <div class="user">
+                <div class="t">密码：</div>
+                <input type="password" class="text" name="password">
+            </div>
+            <button class="submit" onclick="loginSubmit()">登录</button><br>
+            <a href="register.html" style="text-decoration:none;margin-left: 300px;color: rgb(38,177,243)">注册</a>
+
+        </class>
+    </div>
+    <script>
+        function loginSubmit() {
+            var user = document.querySelectorAll(".text");
+            var username = user[0].value;
+            var password = user[1].value;
+            if(jQuery.trim(username) == "" || jQuery.trim(username) == "") {
+                alert("用户名或密码不能为空");
+                return;
+            }
+            var data = JSON.stringify({
+                "username": username,
+                "password": password
+            });
+            jQuery.ajax({
+                url: "login/login",
+                method: "post",
+                data: data,
+                contentType: "application/json",
+                success: function (result) {
+                    if (result != null && result.success == 200) {
+                        if (result.data == 1) {
+                            location.href = "blog_list.html";
+                        } else {
+                            alert("错误提示:" + result.message);
+                            document.querySelectorAll(".text")[0].value = "";
+                            document.querySelectorAll(".text")[1].value = "";
+                        }
+                    } else {
+                        alert("服务器错误");
+                    }
+                }
+            });
+
+        }
+    </script>
+
+</body>
+</html>
