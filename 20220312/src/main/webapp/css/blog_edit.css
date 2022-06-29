@@ -1,0 +1,40 @@
+.edit-container {
+    width: 1000px;
+    height: calc(100% - 50px);
+    margin: 0 auto;
+}
+.edit-container .title {
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+.edit-container .title #text {
+    width: calc(100% - 100px - 10px);
+    height: 40px;
+    border: none;
+    border-radius: 13px;
+    padding-left: 8px;
+    font-size: 18px;
+    outline: none;
+}
+
+.edit-container .title #submit {
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-color: rgb(255,165,0);
+    color: white;
+    border-radius: 13px;
+    outline: none;
+}
+
+.edit-container .title #submit:active {
+    background-color: grey;
+}
+
+#editor {
+    border-radius: 10px;
+    opacity: 0.6;
+}
