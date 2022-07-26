@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo_java_oj.mapper.ProblemMapper">
+    <insert id="insertProblem">
+        insert into oj_table values(null, #{title}, #{level}, #{description}, #{templateCode}, #{testCode});
+    </insert>
+
+    <delete id="deleteProblem">
+        delete from oj_table where id = #{id};
+    </delete>
+
+    <select id="findProblemForTestCode" resultType="com.example.demo_java_oj.model.Problem">
+        select id,testCode from oj_table where id = #{id};
+    </select>
+
+    <select id="findAllProblems" resultType="com.example.demo_java_oj.model.Problem">
+        select id,title,level from oj_table;
+    </select>
+
+    <select id="findProblemForDetail" resultType="com.example.demo_java_oj.model.Problem">
+        select id,title,level, description,templateCode from oj_table where id = #{id};
+    </select>
+</mapper>
