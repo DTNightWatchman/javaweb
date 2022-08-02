@@ -2,7 +2,16 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/oj_database?characterEncoding=utf8&useSSL=false
     username: root
-    password: 1111
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
   mapper-locations: classpath:mapper/**Mapper.xml
+
+server:
+  port: 9092
+
+task:
+  switch:
+    is-open: true
+  corn:
+    task-corn: 0 20 20 ? * *

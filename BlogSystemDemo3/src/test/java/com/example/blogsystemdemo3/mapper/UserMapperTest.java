@@ -29,4 +29,6 @@ class UserMapperTest {
         int ret = userMapper.incNumber(2);
         System.out.println(ret);
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.blogsystemdemo3.mapper;
 
 import com.example.blogsystemdemo3.model.Blog;
+import com.example.blogsystemdemo3.searcher.model.BlogInfo;
 import com.example.blogsystemdemo3.service.BlogService;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -37,4 +38,9 @@ public interface BlogMapper {
     public int getUserIdByBlogId(int blogId);
 
     public List<Blog> getBlogsByUserId(int userId);
+
+    public List<BlogInfo> getBlogTitleAndContent();
+
+    public int deleteBlog(int blogId);
+
 }

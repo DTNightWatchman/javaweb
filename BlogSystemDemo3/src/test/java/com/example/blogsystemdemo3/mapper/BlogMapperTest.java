@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,7 +46,15 @@ class BlogMapperTest {
 
     @Test
     void getUserIdByBlogId() {
-        int ret = blogMapper.getUserIdByBlogId(18);
-        System.out.println(ret);
+        List<Blog> blogs = blogMapper.getAllBlogDesc();
+        for (Blog blog :
+                blogs) {
+            System.out.println(blog);
+        }
+    }
+
+    @Test
+    void getBlogTitleAndContent() {
+        System.out.println(blogMapper.getBlogTitleAndContent());
     }
 }

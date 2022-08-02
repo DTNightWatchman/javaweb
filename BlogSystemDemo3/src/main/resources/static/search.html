@@ -43,9 +43,9 @@
                     <div class="col-sm-12 my-auto text-center">
                         <h1> hello </h1>
                         <p class="lead text-capitalize my-4">
-                            点击查看所有博客
+                            点击查看搜索结果
                         </p>
-                        <a href="#hello" class="btn btn-outline-light btn-radius btn-lg">所有博客</a>
+                        <a href="#hello" class="btn btn-outline-light btn-radius btn-lg">所有结果</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                             </ul>
                             <div class="form-inline my-2 my-lg-0">
                                 <input id="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="search()">Search</button>
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"  onclick="search()">Search</button>
                             </div>
                         </div>
                     </nav>
@@ -85,9 +85,11 @@
                 </div>
 
                 <!-- Jumbotron  -->
-                <div class="row mb-5" id="jumbotron">
+                <div class="row mb-5">
                     <div class="col-sm-12">
-                        
+                        <div class="jumbotron jumbotron-fluid" id="jumbotron1">
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,45 +128,66 @@
     <script>
         function search() {
             let query = document.getElementById('query');
-            location.href="search.html?query=" + query.value;
+            $.ajax({
+                url:"search?query=" + query.value,
+                method:"GET",
+                success: function(data, status) {
+                    let jumbotron = document.getElementById('jumbotron1');
+                    jumbotron.innerHTML = null;
+                    for (let message of data) {
+                        let container = document.createElement('div');
+                        container.className="container";
+                        let h4 = document.createElement('h4');
+                        container.appendChild(h4);
+                        let a = document.createElement('a');
+                        h4.appendChild(a);
+                        a.innerHTML = message.title;
+                        a.href=message.url;
+                        a.target = "_blank";
+                        let p = document.createElement('p');
+                        p.innerHTML = message.desc;
+                        let hr = document.createElement('hr');
+                        container.appendChild(p);
+                        container.appendChild(hr);
+                        jumbotron.appendChild(container);
+                    }
+
+                }
+            })
         }
 
-        let container = document.getElementById('container');
         $.ajax({
-            url:"blog/getBlogs",
+            url:"search" + location.search,
             method:"GET",
-            success: function(data,status) {
-                buildBlogs(data);
-            }
+            success: function(data, status) {
+                let jumbotron = document.getElementById('jumbotron1');
+                
+                for (let message of data) {
+                    let container = document.createElement('div');
+                    container.className="container";
+                    let h4 = document.createElement('h4');
+                    container.appendChild(h4);
+                    let a = document.createElement('a');
+                    h4.appendChild(a);
+                    a.innerHTML = message.title;
+                    a.href=message.url;
+                    a.target = "_blank";
+                    let p = document.createElement('p');
+                    p.innerHTML = message.desc;
+                    let hr = document.createElement('hr');
+                    container.appendChild(p);
+                    container.appendChild(hr);
+                    jumbotron.appendChild(container);
+                }
 
-        });
-
-        function buildBlogs(blogs) {
-            for(let blog of blogs) {
-                let jumbotron = document.createElement('div');
-                jumbotron.className = "row mb-5";
-                jumbotron.id = 'jumbotron';
-                container.appendChild(jumbotron);
-                let col = document.createElement("div");
-                col.className = 'col-sm-12';
-                jumbotron.appendChild(col);
-                let h1 = document.createElement('h1');
-                let a = document.createElement('a');
-                a.target = "_blank";
-                col.appendChild(h1);
-                a.href = "blogDetail.html?blogId=" + blog.blogId;
-                a.innerHTML = blog.title;
-                h1.append(a);
-                let fluid = document.createElement('div');
-                fluid.className = 'jumbotron jumbotron-fluid';
-                col.appendChild(fluid);
-                let content = document.createElement('div');
-                content.className = 'container';
-                fluid.appendChild(content);
-                let p = document.createElement('p');
-                p.innerHTML = blog.blogDesc;
-                content.appendChild(p);
             }
-        }
+        })
+        
     </script>
+    <style>
+        i {
+            color: red;
+            font-style: normal;
+        }
+    </style>
 </html>

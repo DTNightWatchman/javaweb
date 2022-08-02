@@ -1,0 +1,21 @@
+.\tmp\4fe15ede-9a67-42ad-a08a-a6edf0796911\Solution.java:8: 错误: 找不到符号
+        HashMap<Integer,Integer> hash = new HashMap<Integer,Integer>();
+        ^
+  符号:   类 HashMap
+  位置: 类 Solution
+.\tmp\4fe15ede-9a67-42ad-a08a-a6edf0796911\Solution.java:8: 错误: 找不到符号
+        HashMap<Integer,Integer> hash = new HashMap<Integer,Integer>();
+                                            ^
+  符号:   类 HashMap
+  位置: 类 Solution
+.\tmp\4fe15ede-9a67-42ad-a08a-a6edf0796911\Solution.java:21: 错误: 找不到符号
+        Arrays.sort(myResult);
+        ^
+  符号:   变量 Arrays
+  位置: 类 Solution
+.\tmp\4fe15ede-9a67-42ad-a08a-a6edf0796911\Solution.java:22: 错误: 找不到符号
+        Arrays.sort(result);
+        ^
+  符号:   变量 Arrays
+  位置: 类 Solution
+4 个错误

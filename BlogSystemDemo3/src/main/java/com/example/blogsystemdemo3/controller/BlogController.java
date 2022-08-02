@@ -3,6 +3,8 @@ package com.example.blogsystemdemo3.controller;
 import com.example.blogsystemdemo3.model.Blog;
 import com.example.blogsystemdemo3.model.User;
 import com.example.blogsystemdemo3.model.UserSession;
+import com.example.blogsystemdemo3.searcher.Index;
+import com.example.blogsystemdemo3.searcher.model.BlogInfo;
 import com.example.blogsystemdemo3.service.BlogService;
 import com.example.blogsystemdemo3.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @Author: YT
@@ -177,6 +181,24 @@ public class BlogController {
         }
 
         int ret = blogService.deleteBlog(blogId, userId);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+
+                int i = 0;
+                while (true) {
+                    if (Index.forwardIndex.get(i).getBlogId() == blogId) {
+                        break;
+                    }
+                    i++;
+                }
+                synchronized (Index.forwardIndex) {
+                    Index.forwardIndex.get(i).setBlogId(-1);
+                }
+            }
+        });
         if (ret == 1) {
             result.put("success",200);
             result.put("data",ret);

@@ -122,6 +122,7 @@ public class LoginController {
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         session.removeAttribute("userSession");
+        session.invalidate();
         response.sendRedirect("../index.html");
     }
 
