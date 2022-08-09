@@ -1,14 +1,20 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
   datasource:
     url: jdbc:mysql://localhost:3306/oj_database?characterEncoding=utf8&useSSL=false
     username: root
-    password:
+    password: 1111
     driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
   mapper-locations: classpath:mapper/**Mapper.xml
 
 server:
   port: 9092
+  tomcat:
+    basedir: ./tomcat_tmp
 
 task:
   switch:

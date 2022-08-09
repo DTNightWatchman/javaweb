@@ -42,6 +42,7 @@ public class CompileController {
 
     @PostMapping("/compile")
     public CompileResponse compileAndRun(@RequestBody CompileRequest compileRequest) {
+        System.out.println(System.getProperty("user.dir"));
         // 编译和运行
         CompileResponse compileResponse = new CompileResponse();
 

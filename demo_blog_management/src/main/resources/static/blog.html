@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+	<!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+        <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="editor.md/lib/marked.min.js"></script>
+    <script src="editor.md/lib/prettify.min.js"></script>
+    <script src="editor.md/editormd.js"></script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><i class="fa fa-comments"></i> <strong>MASTER </strong></a>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="login/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a href="table.html"><i class="fa fa-table"></i> 博客管理</a>
+                    </li>
+                    <li>
+                        <a href="form.html" class="active-menu"><i class="fa fa-edit"></i> 添加题目 </a>
+                    </li>
+                    <li>
+                        <a href="tableOj.html" class="active-menu"><i class="fa fa-table"></i> 题目列表</a>
+                    </li>
+
+                    <li>
+                        <a href="blog.html" class="active-menu"><i class="fa fa-edit"></i> 查看博客 </a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header">
+                            博客内容
+                        </h1>
+                    </div>
+                </div> 
+                 <!-- /. ROW  -->
+              <div class="row">
+                <div class="col-lg-16">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            查看博客
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div role="form">
+                                        <div class="form-group">
+                                            <label>博客标题</label>
+                                            <input id="title" class="form-control">
+                                        </div>
+
+                                        <div id="editor" class="form-group">
+                                            <label>博客内容</label>
+                                            <textarea class="form-control" name="content" style="display: none;"></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-default" onclick="submitBlog()">提交修改</button>
+                                        <button type="reset" class="btn btn-default" onclick="reset()">Reset Button</button>
+                                    </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+			</div>
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+        </div>
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="assets/js/jquery-1.10.2.js"></script>
+      <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+      <!-- Custom Js -->
+    <script src="assets/js/custom-scripts.js"></script>
+
+    <!-- 引入ace.js -->
+    <script src="https://cdn.bootcss.com/ace/1.2.9/ace.js"></script>
+    <script src="https://cdn.bootcss.com/ace/1.2.9/ext-language_tools.js"></script>
+
+    <script>
+        let content = null;
+        $.ajax({
+            url:"blog/getBlog" + location.search,
+            method:"get",
+            async: false,
+            success: function (data,status) {
+                let title = document.getElementById('title');
+                content = data.content;
+                title.value = data.title;
+            }
+        })
+        var editor = null;
+
+        $(function () {
+            editor = editormd("editor",{
+                width:"100%",
+                height:"800px",
+                markdown: content,
+                syncScrolling : "single",
+                path:"editor.md/lib/",
+                saveHTMLToTextarea:true,
+                imageUpload    : true,
+                imageFormats   : ["jpg", "jpeg", "gif", "png"],
+                imageUploadURL: "/blog/uploadfile",
+                method: "post"
+            });
+        })
+
+        function submitBlog() {
+            let title = document.getElementById('title');
+            let content = document.querySelector('#editor .form-control');
+            let body = {
+                title:title.value,
+                content:content.value
+            }
+            $.ajax({
+                url:"blog/updateBlog" + location.search,
+                method:"POST",
+                data: JSON.stringify(body),
+                contentType:"application/json",
+                success: function (data,status) {
+                    if (data.success != 200) {
+                        alert("服务器错误");
+                    } else {
+                        alert(data.message);
+                        if (data.data == 1) {
+                            location.href = "table.html";
+                        }
+                    }
+                }
+            })
+        }
+    </script>
+
+</body>
+</html>

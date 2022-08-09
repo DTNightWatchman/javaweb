@@ -38,7 +38,7 @@ public class BlogSearcher {
 
     private Set<String> stopWords = new HashSet<>();
     private void loadStopWords() {
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("/root/oj_system/stop.txt"))) {
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("./stop.txt"))) {
             while (true) {
                 String str = bufferedReader.readLine();
                 if (str == null) {

@@ -1,5 +1,6 @@
 package com.example.blogsystemdemo3.interceptor;
 
+import com.example.blogsystemdemo3.model.User;
 import com.example.blogsystemdemo3.model.UserSession;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,6 +25,8 @@ public class LoginInterceptor implements HandlerInterceptor {
             response.sendRedirect("index.html");
             return false;
         }
+        // 对指定文件夹的拦截：通过reguest.get 获取请求路径，然后将请求路径的文件夹名和用户的文件夹名进行对比，如果相同就返回true，不同就返回false
+        // 要从session中拿到用户的专属文件夹名
         return true;
     }
 }

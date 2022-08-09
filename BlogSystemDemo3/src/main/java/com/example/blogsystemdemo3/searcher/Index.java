@@ -98,9 +98,9 @@ public class Index {
     public void save() {
         System.out.println("开始保存索引");
         // /root/oj_system
-        File forwardIndexFile = new File("/root/oj_system/forward.txt");
+        File forwardIndexFile = new File("./forward.txt");
         // /root/oj_system
-        File invertedIndexFile = new File("/root/oj_system/inverted.txt");
+        File invertedIndexFile = new File("./inverted.txt");
         try {
             objectMapper.writeValue(forwardIndexFile,forwardIndex);
             objectMapper.writeValue(invertedIndexFile,invertedIndex);
@@ -111,8 +111,8 @@ public class Index {
     }
 
     public void load() {
-        File forwardIndexFile = new File("/root/oj_system/forward.txt");
-        File invertedIndexFile = new File("/root/oj_system/inverted.txt");
+        File forwardIndexFile = new File("./forward.txt");
+        File invertedIndexFile = new File("./inverted.txt");
         try {
             this.forwardIndex = objectMapper.readValue(forwardIndexFile, new TypeReference<ArrayList<BlogInfo>>() {});
             this.invertedIndex = objectMapper.readValue(invertedIndexFile, new TypeReference<HashMap<String, ArrayList<Weight>>>() {});

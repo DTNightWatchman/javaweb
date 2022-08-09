@@ -44,7 +44,10 @@ var editor = editormd("editor",{
     saveHTMLToTextarea:true,
     theme : "dark",
     previewTheme : "dark",
-    editorTheme : 'lesser-dark'
+    editorTheme : 'lesser-dark',
+    imageUpload    : true,
+    imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+    imageUploadURL : "blog/upload"
 });
 let content = document.getElementById('content');
 
