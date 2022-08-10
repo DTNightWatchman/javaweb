@@ -1,0 +1,4 @@
+.\tmp\ec2c255b-c8c4-4f7a-bd47-2f53c3a98142\Solution.java:4: ´íÎó: ĞèÒª';'
+        return a
+                ^
+1 ¸ö´íÎó
