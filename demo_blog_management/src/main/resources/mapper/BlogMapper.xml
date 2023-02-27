@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo_blog_management.mapper.BlogMapper">
+    <select id="getBlogDesc" resultType="com.example.demo_blog_management.model.BlogDesc">
+        select blogId,title,postTime,userId,status from blog;
+    </select>
+
+    <update id="deleteBlogDesc">
+        update blog set status = 0 where blogId = #{blogId};
+    </update>
+
+    <update id="recoverBlog">
+        update blog set status = 1 where blogId = #{blogId};
+    </update>
+
+    <delete id="deleteBlog">
+        delete from blog where blogId = #{blogId};
+    </delete>
+
+    <delete id="deleteBlogContent">
+        delete from blogDetail where blogId = #{blogId};
+    </delete>
+
+    <select id="getBlogById" resultType="com.example.demo_blog_management.model.Blog">
+        select blog.blogId blogId,blog.title title,blogDetail.content content
+        from blog,blogDetail
+        where blog.blogId = #{blogId} and blog.blogId = blogDetail.blogId;
+    </select>
+
+    <update id="updateBlog">
+        update blog set title = #{title},blogDesc = #{blogDesc} where blogId = #{blogId};
+    </update>
+
+    <update id="updateBlogContent">
+        update blogDetail set content = #{content} where blogId = #{blogId};
+    </update>
+
+</mapper>

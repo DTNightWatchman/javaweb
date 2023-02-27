@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blogsystemdemo3.mapper.BlogMapper">
+    <insert id="insertBlogDesc" keyProperty="blogId" parameterType="com.example.blogsystemdemo3.model.Blog" useGeneratedKeys="true">
+        insert into blog
+        values (null ,#{title},#{blogDesc},#{postTime},#{userId},0,1);
+    </insert>
+
+    <insert id="insertBlogContent">
+        insert into blogDetail values (#{blogId},#{content});
+    </insert>
+
+    <select id="getAllBlogDesc" resultType="com.example.blogsystemdemo3.model.Blog">
+        select * from blog where status = 1 order by postTime desc;
+    </select>
+
+    <select id="getBlogById" resultType="com.example.blogsystemdemo3.model.Blog">
+        select blog.blogId blogId,blog.title title,blog.postTime postTime,blog.userId userId,blog.likes likes,blogDetail.content content
+        from blog,blogDetail
+        where blog.blogId = #{blogId} and blog.blogId = blogDetail.blogId and blog.status=1;
+    </select>
+
+    <update id="incLikes">
+        update blog set likes = likes + 1 where blogId = #{blogId} and status=1;
+    </update>
+
+    <select id="getLikes" resultType="int">
+        select likes from blog where blogId = #{blogId} and status=1;
+    </select>
+
+    <update id="updateBlogDesc">
+        update blog set blogDesc = #{blogDesc},title= #{title} where blogId = #{blogId} and status=1;
+    </update>
+
+    <update id="updateBlogContent">
+        update BlogDetail set content = #{content} where blogId = #{blogId};
+    </update>
+
+    <delete id="deleteBlogDesc">
+        delete from blog where blogId = #{blogId};
+    </delete>
+
+    <delete id="deleteBlogContent">
+        delete from blogDetail where blogId = #{blogId};
+    </delete>
+
+    <select id="getUserIdByBlogId" resultType="int">
+        select userId from blog where blogId = #{blogId} and status=1;
+    </select>
+
+    <select id="getBlogsByUserId" resultType="com.example.blogsystemdemo3.model.Blog">
+        select blogId,title,blogDesc from blog where userId = #{userId} and status=1;
+    </select>
+
+    <select id="getBlogTitleAndContent" resultType="com.example.blogsystemdemo3.searcher.model.BlogInfo">
+        select blog.blogId,blog.title,blogDetail.content from blog,blogDetail where blog.blogId = blogDetail.blogId and status=1;
+    </select>
+
+    <update id="deleteBlog">
+        update blog set status = 0 where blogId = #{blogId};
+    </update>
+
+</mapper>

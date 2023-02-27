@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>博客系统</title>
+        <meta name="description" content="Charcoal is a free Bootstrap 4 UI kit build by @attacomsian at Wired Dots." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Bootstrap 4-->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top sticky-navigation">
+            <a class="navbar-brand font-weight-bold" href="list.html">博客系统</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topMenu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="topMenu">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link page-scroll" href="indexOj.html">OJ <span class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item active">
+                        <a class="nav-link page-scroll" href="editor.html">写博客 <span class="sr-only">(current)</span></a>
+                    </li>
+
+
+                    <li class="nav-item active">
+                        <a class="nav-link page-scroll" href="login/logout">注销 <span class="sr-only">(current)</span></a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </nav>
+
+        <!--hero section-->
+        <section class="bg-hero">
+            <div class="container">
+                <div class="row vh-100">
+                    <div class="col-sm-12 my-auto text-center">
+                        <h1> hello </h1>
+                        <p class="lead text-capitalize my-4">
+                            点击查看所有博客
+                        </p>
+                        <a href="#hello" class="btn btn-outline-light btn-radius btn-lg">所有博客</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!--components-->
+        <section class="my-5 pt-5"  id="hello">
+            <div class="container" id="container">
+
+                <div class="mt-3 mb-5">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <a class="navbar-brand" href="javascript:void(0);">查找博客</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="list.html">所有博客 <span class="sr-only">(current)</span></a>
+                                </li>
+                            </ul>
+                            <div class="form-inline my-2 my-lg-0">
+                                <input id="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="search()">Search</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Jumbotron  -->
+                <div class="row mb-5" id="jumbotron">
+                    <div class="col-sm-12">
+                    </div>
+                </div>
+
+                <!-- Jumbotron  -->
+                <div class="row mb-5" id="jumbotron">
+                    <div class="col-sm-12">
+                        
+                    </div>
+                </div>
+            </div>
+
+               
+
+        </section>
+
+        <!--footer-->
+        <section class="py-5 bg-dark">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-12 text-center">
+                        <!-- <h3>Upgrade to Pro Version</h3>
+                        <p class="pt-2">
+                            We are working on <b>Charcoal Pro</b> which will be released soon. The pro version 
+                            will have a lot more components, sections, icons, plugins and example pages. 
+                            Join the waiting list to get notified when we release it (plus discount code).
+                        </p>
+                        <a class="btn btn-warning" href="https://wireddots.com/newsletter">Join Waiting List</a>
+                        <hr class="my-5"/> -->
+                        <p class="pt-2 text-muted">
+                            &copy; YT摆渡人
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+    <script>
+        function search() {
+            let query = document.getElementById('query');
+            location.href="search.html?query=" + query.value;
+        }
+
+        let container = document.getElementById('container');
+        $.ajax({
+            url:"blog/getBlogs",
+            method:"GET",
+            success: function(data,status) {
+                buildBlogs(data);
+            }
+
+        });
+
+        function buildBlogs(blogs) {
+            for(let blog of blogs) {
+                let jumbotron = document.createElement('div');
+                jumbotron.className = "row mb-5";
+                jumbotron.id = 'jumbotron';
+                container.appendChild(jumbotron);
+                let col = document.createElement("div");
+                col.className = 'col-sm-12';
+                jumbotron.appendChild(col);
+                let h1 = document.createElement('h1');
+                let a = document.createElement('a');
+                a.target = "_blank";
+                col.appendChild(h1);
+                a.href = "blogDetail.html?blogId=" + blog.blogId;
+                a.innerHTML = blog.title;
+                h1.append(a);
+                let fluid = document.createElement('div');
+                fluid.className = 'jumbotron jumbotron-fluid';
+                col.appendChild(fluid);
+                let content = document.createElement('div');
+                content.className = 'container';
+                fluid.appendChild(content);
+                let p = document.createElement('p');
+                p.innerHTML = blog.blogDesc;
+                content.appendChild(p);
+            }
+        }
+    </script>
+</html>

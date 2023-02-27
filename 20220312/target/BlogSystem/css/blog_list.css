@@ -1,0 +1,41 @@
+.message {
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 30px;
+}
+.message .title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+}
+.message .data {
+    text-align: center;
+    font-weight: 500;
+    color: rgb(40, 197, 67);
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.message .desc {
+    text-indent: 2em;
+}
+
+.message a {
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    width: 120px;
+    height: 40px;
+    border: 2px solid black;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    line-height: 38px;
+    transition: all 0.5s;
+}
+.message a:hover {
+    background-color: gray;
+    color: black;
+}

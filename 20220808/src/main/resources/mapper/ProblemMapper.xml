@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.OjDemo.mapper.ProblemMapper">
+    <select id="getProblemList" resultType="com.example.demo.OjDemo.model.Problem">
+        select id,title,level from oj_table;
+    </select>
+
+    <insert id="addProblem">
+        insert into oj_table values (null,#{title},#{level},#{description},#{templateCode},#{testCode});
+    </insert>
+
+    <select id="getProblem" resultType="com.example.demo.OjDemo.model.Problem">
+        select id,title,level,description,templateCode from oj_table where id = #{id};
+    </select>
+
+    <select id="getTestCode" resultType="String">
+        select testCode from oj_table where id = #{id};
+    </select>
+</mapper>

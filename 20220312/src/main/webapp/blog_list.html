@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表页面</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_list.css">
+</head>
+<body>
+    <class class="nav">
+        <img src="image/123.jpg" alt="" width="40px">
+        <span class="title">我的博客系统</span>
+        <span class="spacer"></span>
+        <a href="#">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <a href="logout">注销</a>
+    </class>
+    <class class="container">
+        <class class="container-left">
+            <div class="card">
+                <img src="image/345.jpg" alt="">
+                <h3></h3>
+                <a href="#">github地址</a>
+                <div class="conter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="conter">
+                    <span>2</span>
+                    <span>1</span>
+                </div>
+            </div>
+        </class>
+        <div class="container-right">
+            <!-- <div class="message">
+                <div class="title">我的第一篇博客</div>
+                <div class="data">2021-10-24</div>
+                <div class="desc">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Dolores quo voluptatibus veniam, asperiores, 
+                    officiis doloribus maiores omnis quod beatae aspernatur, 
+                    eveniet ipsam amet optio! Libero 
+                    doloremque blanditiis quae qui laboriosam.
+                </div>
+                <a href="#">查看全文 &gt; &gt;</a>
+            </div> -->
+        </div>
+    </class>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        $.ajax({
+            url:"user",
+            method:"get",
+            success:function(data,status) {
+                console.log(data);
+                let container = document.querySelector(".container .container-left .card h3");
+                container.innerHTML = data.username;
+            }
+        });
+
+
+        
+
+        $.ajax({
+            url:"blog",
+            method:"get",
+            success:function(data,status) {
+                buildBlogs(data);
+            },
+            error:function(status) {
+                location.assign("blog_login.html");
+            }
+        });
+        function buildBlogs(data) {
+            let container = document.querySelector(".container-right");
+            for(let blog of data) {
+                let messageDiv = document.createElement("class");
+                messageDiv.className = "message";
+                //创建title
+                let titleDiv = document.createElement("div");
+                titleDiv.className="title";
+                console.log(blog.title);
+                titleDiv.innerHTML=blog.title;
+                messageDiv.appendChild(titleDiv);
+                //创建日期
+                let dataDiv = document.createElement("div");
+                dataDiv.className="data";
+                dataDiv.innerHTML=formatDate(blog.postTime);
+                messageDiv.appendChild(dataDiv);
+                //创建正文
+                let descDiv = document.createElement("div");
+                descDiv.className="desc";
+                descDiv.style="margin-left: 20px;"
+                descDiv.innerHTML=blog.content;
+                messageDiv.appendChild(descDiv);
+                //创建标签
+                let aDiv = document.createElement("a");
+                aDiv.innerHTML="查看全文 &gt; &gt;";
+                //设置跳转路径
+                aDiv.href="blog_detail.html?blogId=" + blog.blogId;
+                messageDiv.appendChild(aDiv);
+                //把构造好的messageDiv插入到父元素中
+                container.appendChild(messageDiv);
+            }
+        }
+
+        function formatDate(datetime) {
+            var date = new Date(datetime);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var year = date.getFullYear(),
+                month = ("0" + (date.getMonth() + 1)).slice(-2),
+                sdate = ("0" + date.getDate()).slice(-2),
+                hour = ("0" + date.getHours()).slice(-2),
+                minute = ("0" + date.getMinutes()).slice(-2),
+                second = ("0" + date.getSeconds()).slice(-2);
+            // 拼接
+            var result = year + "-"+ month +"-"+ sdate +" "+ hour +":"+ minute +":" + second;
+            // 返回
+            return result;
+        }
+    </script>
+</body>
+</html> 

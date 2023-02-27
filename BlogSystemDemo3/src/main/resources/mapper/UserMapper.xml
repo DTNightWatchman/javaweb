@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blogsystemdemo3.mapper.UserMapper">
+
+    <insert id="insertUser">
+        insert into user values(null ,#{username}, #{password},0,#{email},#{github});
+    </insert>
+
+    <select id="ifExistUser" resultType="com.example.blogsystemdemo3.model.User">
+        select userId from user where username = #{username};
+    </select>
+
+    <select id="ifCouldLogin" resultType="com.example.blogsystemdemo3.model.User">
+        select userId,username,number,email,github from user where (username = #{username} and password = #{password}) or (email = #{username} and password = #{password});
+    </select>
+
+    <select id="getUserMessage" resultType="com.example.blogsystemdemo3.model.UserSession">
+        select userId,username,number,email,github from user where userId = #{userId};
+    </select>
+
+    <update id="incNumber">
+        update user set number = number + 1 where userId = #{userId};
+    </update>
+
+
+    <update id="decNumber">
+        update user set number = number - 1 where userId = #{userId};
+    </update>
+
+</mapper>

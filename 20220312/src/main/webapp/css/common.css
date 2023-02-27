@@ -1,0 +1,102 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+html,body {
+    height: 100%;
+    width: 100%;
+    background-image: url(../image/234.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.nav{
+    width: 100%;
+    height: 50px;
+    background-color: rgb(48,54,67,0.5);
+    color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.nav img {
+    width: 40px;
+    height: 40px;
+    margin-left: 20px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+.nav title {
+    width: 150px;
+}
+.nav .spacer {
+    height: 50px;
+    width: calc(100% - 400px);
+}
+
+.nav a {
+    color:#fff;
+    text-decoration: none;
+    padding-left: 5px;
+    width: 70px;
+}
+.container {
+    width: 1000px;
+    height: calc(100% - 50px);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.container .container-left {
+    width: 200px;
+    height: 100%;
+
+}
+.container .container-right {
+    width: 795px;
+    height: 100%;
+    background-color: rgb(235,236,239,0.6);
+    border-radius: 2%;
+    overflow: auto;
+}
+
+
+
+.card {
+    background-color: rgb(235,236,239,0.6);
+    border-radius: 5%;
+    padding-left: 25px;
+    padding-right: 25px;
+
+}
+
+.card img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-top: 30px;
+
+}
+.card h3 {
+    text-align: center;
+    margin-top: 10px;
+}
+.card a {
+    /* 这里的链接会被当作行内元素，所以要转化为块级元素，这样才能让一些设置生效 */
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: gray;
+    font-size: 15px;
+    margin-top: 10px;
+}
+.card .conter {
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+}

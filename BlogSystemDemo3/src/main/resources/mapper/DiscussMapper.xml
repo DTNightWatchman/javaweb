@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.blogsystemdemo3.mapper.DiscussMapper">
+    <insert id="insertDiscuss">
+        insert into discuss values (null ,#{blogId},#{userId},#{username},now(),#{content});
+    </insert>
+
+    <delete id="deleteDiscuss">
+        delete from discuss where discussId = #{discussId};
+    </delete>
+
+    <select id="getDiscussesByblogId" resultType="com.example.blogsystemdemo3.model.Discuss">
+        select * from discuss where blogId = #{blogId};
+    </select>
+
+    <select id="getOwner" resultType="int">
+        select userId from discuss where discussId = #{discussId};
+    </select>
+
+</mapper>
