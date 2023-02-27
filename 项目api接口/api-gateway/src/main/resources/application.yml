@@ -1,0 +1,30 @@
+server:
+  port: 10010
+
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-wait: 100ms
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+    database: 4
+  cloud:
+    gateway:
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+            - Path=/api/**
+dubbo:
+  application:
+    name: dubbo-springboot-backend-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://127.0.0.1:8848?username=nacos&password=nacos
