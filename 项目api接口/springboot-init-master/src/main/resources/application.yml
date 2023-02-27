@@ -53,10 +53,10 @@ dubbo:
     address: nacos://127.0.0.1:8848?username=nacos&password=nacos
 
 cos:
-  baseUrl: https://12138-1309783343.cos.ap-nanjing.myqcloud.com
-  accessKey: AKIDMcgW7UQAl9KMCrKYYYQ7brv56xc3IJ9v
-  secretKey: e5MQOK8oJkCantoYN6d2Kds05CD8yc9E
+  baseUrl: https://12138-19783343.cos.ap-nanjing.myqcloud.com
+  accessKey: 
+  secretKey: 
   regionName: ap-nanjing
-  bucketName: 12138-1309783343
-  folderPrefix: /dpImages
+  bucketName: 12138-1309343
+  folderPrefix: /dpIm
 

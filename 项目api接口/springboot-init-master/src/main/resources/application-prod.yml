@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://gz-cynosdbmysql-grp-gw9thvsl.sql.tencentcdb.com:20204/db_api
     username: root
-    password: YTbaiduren12138
+    password: 
   # redis 配置
   redis:
     port: 6379
