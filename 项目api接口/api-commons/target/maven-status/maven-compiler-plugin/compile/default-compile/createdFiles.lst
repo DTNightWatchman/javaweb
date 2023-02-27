@@ -1,0 +1,7 @@
+com\yt\apicommons\services\CommonUserInterfaceInfoService.class
+com\yt\apicommons\model\domain\InterfaceInfo.class
+com\yt\apicommons\model\entity\User.class
+com\yt\apicommons\model\enums\PostReviewStatusEnum.class
+com\yt\apicommons\model\enums\PostGenderEnum.class
+com\yt\apicommons\model\vo\UserVO.class
+com\yt\apicommons\model\domain\UserInterfaceInfo.class
